@@ -13,8 +13,9 @@ class FaqController extends Controller
     /**
      * FAQ 페이지
      *
-     * @param Request $request
+     * @param Request          $request
      * @param FaqCategory|null $faqCategory
+     *
      * @return Renderable
      */
     public function index(Request $request, FaqCategory $faqCategory = null)
@@ -26,18 +27,18 @@ class FaqController extends Controller
 
         $faqCategory = ($faqCategory == null) ? $categories->first() : $faqCategory;
 
-        $faqs = Faq::when($request->get('stx'), function($query, $stx){
-                $query->where('subject', 'LIKE', "%{$stx}%")
-                        ->orWhere('content', 'LIKE', "%{$stx}%");
-            })
+        $faqs = Faq::when($request->get('stx'), function ($query, $stx) {
+            $query->where('subject', 'LIKE', "%{$stx}%")
+                    ->orWhere('content', 'LIKE', "%{$stx}%");
+        })
             ->where('faq_category_id', $faqCategory->id)
             ->orderBy('position')
             ->get();
 
         $data = [
             'faqCategory' => $faqCategory,
-            'categories' => $categories,
-            'faqs' => $faqs,
+            'categories'  => $categories,
+            'faqs'        => $faqs,
         ];
 
         return view('faq::index', $data);

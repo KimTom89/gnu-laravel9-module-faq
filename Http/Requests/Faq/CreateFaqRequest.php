@@ -37,9 +37,9 @@ class CreateFaqRequest extends FormRequest
     {
         return [
             'faq_category_id' => ['required', 'exists:faq_categories,id'],
-            'position' => ['required', 'numeric'],
-            'subject' => ['required'],
-            'content' => ['required'],
+            'position'        => ['required', 'numeric'],
+            'subject'         => ['required'],
+            'content'         => ['required'],
         ];
     }
 }

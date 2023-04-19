@@ -14,7 +14,7 @@ class FaqCategory extends Model
     protected $guarded = ['_token'];
 
     /**
-     * Get the opinions for the poll
+     * Get the opinions for the poll.
      */
     public function faqs()
     {
