@@ -29,6 +29,7 @@ class FaqAdminController extends Controller
      * FAQ 항목 목록 페이지
      *
      * @param FaqCategory $faqCategory
+     *
      * @return \Illuminate\Contracts\View\View
      */
     public function index(Request $request)
@@ -39,7 +40,7 @@ class FaqAdminController extends Controller
                 $query->where('subject', 'LIKE', "%{$stx}%")
                     ->orWhere('content', 'LIKE', "%{$stx}%");
             })
-            ->when($request->get('faqCategory'), function($query, $category) {
+            ->when($request->get('faqCategory'), function ($query, $category) {
                 $query->where('faq_category_id', $category);
             })
             ->orderBy('position')
@@ -47,8 +48,8 @@ class FaqAdminController extends Controller
 
         $data = [
             'faqCategories' => $faqCategories,
-            'faqs' => $faqs,
-            'total' => number_format($faqs->count()),
+            'faqs'          => $faqs,
+            'total'         => number_format($faqs->count()),
         ];
 
         return view('faq::admin.index', $data);
@@ -58,6 +59,7 @@ class FaqAdminController extends Controller
      * FAQ 항목 등록 페이지
      *
      * @param Faq $faq
+     *
      * @return \Illuminate\Contracts\View\View
      */
     public function create(Faq $faq)
@@ -65,20 +67,21 @@ class FaqAdminController extends Controller
         $faqCategories = FaqCategory::withMax('faqs', 'position')->get();
 
         $data = [
-            'title' => 'FAQ 등록',
+            'title'         => 'FAQ 등록',
             'faqCategories' => $faqCategories,
-            'faq' => $faq,
-            'action' => route('admin.faq.store'),
+            'faq'           => $faq,
+            'action'        => route('admin.faq.store'),
         ];
 
         return view('faq::admin.edit', $data);
     }
 
     /**
-     * FAQ 항목 저장
+     * FAQ 항목 저장.
      *
      * @param CreateFaqRequest $request
-     * @param Faq $faq
+     * @param Faq              $faq
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateFaqRequest $request, Faq $faq)
@@ -94,29 +97,31 @@ class FaqAdminController extends Controller
      * FAQ 항목 수정 페이지
      *
      * @param FaqCategory $faqCategory
-     * @param Faq $faq
+     * @param Faq         $faq
+     *
      * @return \Illuminate\Contracts\View\View
      */
     public function edit(Faq $faq)
     {
         $faqCategories = FaqCategory::withMax('faqs', 'position')->get();
-        
+
         $data = [
-            'title' => 'FAQ 수정',
+            'title'         => 'FAQ 수정',
             'faqCategories' => $faqCategories,
-            'faq' => $faq,
-            'action' => route('admin.faq.update', ['faq' => $faq]),
+            'faq'           => $faq,
+            'action'        => route('admin.faq.update', ['faq' => $faq]),
         ];
 
         return view('faq::admin.edit', $data);
     }
 
     /**
-     * FAQ 항목 수정
+     * FAQ 항목 수정.
      *
      * @param UpdateFaqRequest $request
-     * @param FaqCategory $faqCategory
-     * @param Faq $faq
+     * @param FaqCategory      $faqCategory
+     * @param Faq              $faq
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateFaqRequest $request, FaqCategory $faqCategory, Faq $faq)
@@ -127,12 +132,13 @@ class FaqAdminController extends Controller
         return redirect()->route('admin.faq.edit', ['faqCategory' => $faqCategory, 'faq' => $faq])
             ->with('status', '수정되었습니다.');
     }
-    
+
     /**
-     * FAQ 항목 삭제
+     * FAQ 항목 삭제.
      *
      * @param FaqCategory $faqCategory
-     * @param Faq $faq
+     * @param Faq         $faq
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(FaqCategory $faqCategory, Faq $faq)
@@ -145,7 +151,7 @@ class FaqAdminController extends Controller
 
     /**
      * FAQ 카테고리 목록 페이지
-     * 
+     *
      * @return Renderable
      */
     public function indexCategory()
@@ -159,7 +165,7 @@ class FaqAdminController extends Controller
             ->paginate($paginate);
 
         $data = [
-            'total' => number_format($categories->total()),
+            'total'      => number_format($categories->total()),
             'categories' => $categories,
         ];
 
@@ -170,6 +176,7 @@ class FaqAdminController extends Controller
      * FAQ 카테고리 등록 페이지
      *
      * @param FaqCategory $faqCategory
+     *
      * @return \Illuminate\Contracts\View\View
      */
     public function createCategory(FaqCategory $faqCategory)
@@ -177,19 +184,20 @@ class FaqAdminController extends Controller
         $faqCategory->position = FaqCategory::max('position') + 1;
 
         $data = [
-            'title' => 'FAQ 카테고리 등록',
+            'title'       => 'FAQ 카테고리 등록',
             'faqCategory' => $faqCategory,
-            'action' => route('admin.faq-category.store'),
+            'action'      => route('admin.faq-category.store'),
         ];
 
         return view('faq::admin.category.edit', $data);
     }
 
     /**
-     * FAQ 카테고리 저장
+     * FAQ 카테고리 저장.
      *
      * @param CreateFaqCategoryRequest $request
-     * @param FaqCategory $faqCategory
+     * @param FaqCategory              $faqCategory
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function storeCategory(CreateFaqCategoryRequest $request, FaqCategory $faqCategory)
@@ -213,24 +221,26 @@ class FaqAdminController extends Controller
      * FAQ 카테고리 수정 페이지
      *
      * @param FaqCategory $faqCategory
+     *
      * @return \Illuminate\Contracts\View\View
      */
     public function editCategory(FaqCategory $faqCategory)
     {
         $data = [
-            'title' => 'FAQ 카테고리 수정',
+            'title'       => 'FAQ 카테고리 수정',
             'faqCategory' => $faqCategory,
-            'action' => route('admin.faq-category.update', ['faqCategory' => $faqCategory]),
+            'action'      => route('admin.faq-category.update', ['faqCategory' => $faqCategory]),
         ];
 
         return view('admin.faq-category.edit', $data);
     }
 
     /**
-     * FAQ 카테고리 수정
-     * 
+     * FAQ 카테고리 수정.
+     *
      * @param UpdateFaqCategoryRequest $request
-     * @param FaqCategory $faqCategory
+     * @param FaqCategory              $faqCategory
+     *
      * @return void
      */
     public function updateCategory(UpdateFaqCategoryRequest $request, FaqCategory $faqCategory)
@@ -261,16 +271,17 @@ class FaqAdminController extends Controller
         return redirect()->route('admin.faq-category.edit', ['faqCategory' => $faqCategory])
             ->with('status', '수정되었습니다.');
     }
-    
+
     /**
-     * FAQ 카테고리 삭제
+     * FAQ 카테고리 삭제.
      *
      * @param FaqCategory $faqCategory
+     *
      * @return void
      */
     public function destroyCategory(FaqCategory $faqCategory)
     {
-        DB::transaction(function () use ($faqCategory){
+        DB::transaction(function () use ($faqCategory) {
             $faqCategory->delete();
             $faqCategory->faqs()->delete();
         });

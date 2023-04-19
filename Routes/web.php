@@ -22,14 +22,13 @@ Route::prefix('/faq')->controller(FaqController::class)->group(function () {
 
 // FAQ 관리자
 Route::prefix('adm/faq')->middleware('admin.menu.permission')->controller(FaqAdminController::class)->group(function () {
-
     Route::prefix('/category')->group(function () {
         Route::get('/', 'indexCategory')->name('admin.faq-category.index');
         Route::get('/create', 'createCategory')->name('admin.faq-category.create');
         Route::post('/', 'storeCategory')->name('admin.faq-category.store');
         Route::get('/{faqCategory}', 'editCategory')->name('admin.faq-category.edit');
         Route::put('/{faqCategory}', 'updateCategory')->name('admin.faq-category.update');
-        Route::delete('/{faqCategory}', 'destroyCategory')->name('admin.faq-category.destroy');    
+        Route::delete('/{faqCategory}', 'destroyCategory')->name('admin.faq-category.destroy');
     });
 
     Route::get('/', 'index')->name('admin.faq.index');

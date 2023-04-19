@@ -36,17 +36,17 @@ class UpdateFaqCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'position' => ['required', 'numeric'],
-            'subject' => ['required'],
-            'image_head' => ['sometimes', 'image'],
-            'image_tail' => ['sometimes', 'image'],
+            'position'          => ['required', 'numeric'],
+            'subject'           => ['required'],
+            'image_head'        => ['sometimes', 'image'],
+            'image_tail'        => ['sometimes', 'image'],
             'image_head_delete' => ['sometimes', 'boolean'],
             'image_tail_delete' => ['sometimes', 'boolean'],
-            'head_html' => [],
-            'tail_html' => [],
-            'mobile_head_html' => [],
-            'mobile_tail_html' => [],
-            
+            'head_html'         => [],
+            'tail_html'         => [],
+            'mobile_head_html'  => [],
+            'mobile_tail_html'  => [],
+
         ];
     }
 }

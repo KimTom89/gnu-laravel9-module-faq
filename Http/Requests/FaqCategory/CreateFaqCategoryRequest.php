@@ -36,12 +36,12 @@ class CreateFaqCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'position' => ['required', 'numeric'],
-            'subject' => ['required'],
-            'image_head' => ['sometimes', 'image'],
-            'image_tail' => ['sometimes', 'image'],
-            'head_html' => [],
-            'tail_html' => [],
+            'position'         => ['required', 'numeric'],
+            'subject'          => ['required'],
+            'image_head'       => ['sometimes', 'image'],
+            'image_tail'       => ['sometimes', 'image'],
+            'head_html'        => [],
+            'tail_html'        => [],
             'mobile_head_html' => [],
             'mobile_tail_html' => [],
         ];
